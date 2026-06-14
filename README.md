@@ -13,6 +13,9 @@ In the code of chart.js, you can modify and configure the generation speed, freq
 It might be necessary to check the status in combination with the output console.
 结合输出控制台查看状态可能是必要的。
 
+The readme document was manually written may not match the actual situation, It cannot be regarded as 100% correct.
+readme文档为时隔半年后手动书写，可能与实际存在差别或者错别字，不能视为百分百正确。
+
 ！！！！！！！！Note that there may be unused code in the js content. Please be careful to distinguish.
 ！！！！！！！！注意，js内容存在未使用的代码，注意甄别。
 ---

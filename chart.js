@@ -1,5 +1,4 @@
-// update akshare
-// pip install --upgrade akshare
+// ___________author: moogiegik___________
 // Get elements
 // ______元素变量 elements variables____________________________________________________________________________
 // 代码输入口对象 code input port obj
@@ -151,6 +150,21 @@ const timeList = ['9:35','9:40', '9:45', '9:50', '9:55', '10:00', '10:05', '10:1
     '13:10', '13:15', '13:20', '13:25', '13:30', '13:35', '13:40', '13:45', '13:50', '13:55', '14:00', '14:05',
     '14:10', '14:15', '14:20', '14:25', '14:30', '14:35', '14:40', '14:45', '14:50', '14:55', '15:00']
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // ___________author: moogiegik___________
 //MOVELINE VARS
 let downloadList = document.getElementById("downloadList")
 
@@ -206,7 +220,7 @@ let numBSJ = document.getElementsByClassName("numBSJ")
               // 空防  空攻  多攻  多防  空防半随机  空攻半随机   多攻半随机   多防半随机
               //[0,    1,    2,    3,    4,        5,          6,         7]
 var gongFang =  [0,    0,    0,    0,    0,        0,          0,         0]
-
+// ___________author: moogiegik___________
 // 涨跌类
             //o,  c,  h,  l
             //0,  1,  2,  3
@@ -583,7 +597,8 @@ function coutRateNO1(start,end,reslut,info){
     // console.log("start",start,"end",end,"winN",pos,"within",leng,"WIN RATE:",rt);
     return rt
 }
-}
+}// ___________author: moogiegik___________
+// ___________author: moogiegik___________
 // ______事件处理 函数____________________________________________________________________________
 // function radioCLHandleChange(radio){
 //   switch (radio.id) {
@@ -593,7 +608,7 @@ function coutRateNO1(start,end,reslut,info){
 //   closeButton.addEventListener('click', function() {
 //     modal.style.display = 'none';
 // });
-
+// ___________author: moogiegik___________
 // 按钮点击事件
 moreButton.addEventListener('click', function() {
     //alert('你选择了“多”');
@@ -850,7 +865,7 @@ setInterval(function() {
 //     moveLineDatas[moveStep] = moveLineDatas[moveStep-1]+getRandomIntWithSign(0,5)
 //   }
 // }
-
+// ___________author: moogiegik___________
 function getRandomInt(min, max) { //[min,max]闭区间
   min = Math.ceil(min); // 向上取整
   max = Math.floor(max); // 向下取整
@@ -1035,7 +1050,7 @@ function ressultReport(){
 
   return rslt
 }
-
+// ___________author: moogiegik___________
 }
 
 // ______indexes chart draw functions____________________________________________________________________________
@@ -1048,7 +1063,7 @@ function fiveMinsLine(dataRaw,index,cutoutt=true){
   data.push(dataRaw[1])
   for (i = 1; i < dataRaw.length; i+=5) {
     if(dataRaw[i+index]==0){break;}
-    data.push(dataRaw[i+index])
+    data.push(dataRaw[i+index])// ___________author: moogiegik___________
     data2.push(dataRaw.slice(i,i+5))
     if(data.length>=subEndIndex+1 && cutoutt ){break;}
   } 
@@ -1086,7 +1101,7 @@ function fiveMinsLine(dataRaw,index,cutoutt=true){
   }
   MinsLinectx.stroke()
 
-  if(subEndIndex<48){
+  if(subEndIndex<48){// ___________author: moogiegik___________
     data2.unshift(dataRaw[0])
     console.log("getSoketTempIV","subEndIndex",subEndIndex,"++++++++++++++++++++++")
     $.ajax({
@@ -1107,7 +1122,7 @@ function fiveMinsLine(dataRaw,index,cutoutt=true){
           TempIv = []
       }
     });
-  }
+  }// ___________author: moogiegik___________
 }
 // 聚焦信息
 // draw focus item info_____FUNCTION
@@ -1139,7 +1154,7 @@ function crossInfo(crossIdx,visibleMax){
 
   text += "\n涨跌："+ VisibleData[1][crossIdx][7] + "%\n"
   text += "\n收盘："+VisibleData[1][crossIdx][2] +"</span>" + "</div>"
-
+// ___________author: moogiegik___________
   text += "<div>\n\nQ  1："+VisibleData[2][crossIdx][Bx_On_Use[0]]
   text += '<span style="color: rgb(188, 146, 7);">'+"\nMDL："+VisibleData[2][crossIdx][Bx_On_Use[1]]+"</span>"
   text += "\nQ  3："+VisibleData[2][crossIdx][Bx_On_Use[2]]
@@ -1242,7 +1257,7 @@ function drawAverageLineVolume(data,dataIndex,maxPV,indexStart,heightAverage,sum
     dataIndex+=1
   }
   SUBctx.stroke();
-}
+}// ___________author: moogiegik___________
 
 }
 
@@ -1664,7 +1679,7 @@ function changeSwitchStyle(ind,target){
     target.style.background = 'white';
   }
   refreshDraw(Switches)
-}
+}// ___________author: moogiegik___________
 function deepCopyArray(arr) {
   // deep copy slice array
   return arr.map(item => {
@@ -1687,7 +1702,7 @@ function handleKdata(arr){
     kitem.push( Math.min(...element)) //low
     arr[index] = kitem
   }
-  return arr
+  return arr// ___________author: moogiegik___________
 }
 // 起始事件处理
 // add Event listener to element    FUNCTION  fixed
@@ -1708,7 +1723,7 @@ document.addEventListener('DOMContentLoaded', function() {
         radioCLValueArray[i] = 0;
       }
       //console.log(radioCL[i].id, "No.", i,radioCLValueArray,radioCL[i].checked);
-    });
+    });// ___________author: moogiegik___________
   }
 
   //let numCL = document.getElementsByClassName("numCL")
@@ -1733,7 +1748,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         numCL[i].value = currentValue;
         numCLValueArray[i] = currentValue;
-    });
+    });// ___________author: moogiegik___________
   }
   
 });
@@ -1792,7 +1807,7 @@ window.onload = function() {
     tempBansui.push(numCLValueArray[7])
     tempBansui.push(numCLValueArray[7])      
   }
-}
+}// ___________author: moogiegik___________
 // draw test    FUNCTION
 function drawTest(ctx,canvas,color,x,y,X,Y){
   //ctx.clearRect(0,0,ctx.width,ctx.height)
@@ -1844,7 +1859,7 @@ function PrintBASICVariables(info,shortflag=false){
       "radioCLValueArray",radioCLValueArray,"\n",
       "numCLValueArray",numCLValueArray,"\n",
       )
-  }else{
+  }else{// ___________author: moogiegik___________
     console.log(
       "duoGLiang",gongFang[1],"\n",
       "kongGliang",gongFang[2],"\n",
@@ -1899,7 +1914,7 @@ function SpecialInfo(){
   // for (let index = 0; index < KKKKdata2.length; index++) {
   //   console.log(KKKKdata2[index]);    
   // }
-
+// ___________author: moogiegik___________
 }
 
 }
