@@ -1,0 +1,212 @@
+<html>
+  <head>
+    <title>chart</title>
+    <!-- <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='GgiKeIcon白底.ico') }}"> -->
+    <link rel="icon" href="{{ url_for('static', filename='GgiKeIcon白底.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="chart.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+
+  </head>
+  <!-- <body onload="resizeObserverOfMainchart()"> -->
+  <body>
+    <div class="TopContainer">
+      <div class="left">
+        <!-- <canvas id="Mainchart" width="500" height="300"></canvas> -->
+        <canvas id="Mainchart"></canvas>
+        <div id="DateChart" style="display: flex;">
+          <p id="startDate" style="flex: 0.1;text-align: left;"></p>
+          <p id="ontime" style="flex: 1;text-align: center;"></p>
+          <p id="endDate" style="flex: 1;text-align: right;padding-right: 2px;"></p>
+          <!-- <div id="widthLevel" style="flex: 0.5;text-align: center;display: flex;align-items: center;">
+            <button onclick="zoomChange(-5)" style="width: 25%;font-size: 100%;padding: 0;">-</button>
+            <p style="background: white;border: 1px solid white;">15</p>
+            <button onclick="zoomChange(5)" style="width: 25%;font-size: 100%;padding: 0;">+</button>
+          </div> -->
+        </div>
+        <canvas id="SUBchart"></canvas>
+        <div id="CrossInfo" style="right: 150;"></div>
+      </div>
+      <div class="right">
+        <!-- 
+        class：
+        单选类 radioCL   
+        数字类 numCL
+        
+        -->
+        <!-- 随机面板 -->
+        <div class="tradeInfoContainer" style="padding-top:0;"> 
+            <div style="display: flex;">
+                <input class="numCL"   id="chuzhi"      type="number" placeholder="7000"  value="7000" style="width: 50%;height: 20px;">
+                <input class="radioCL" id="ChuZhiSuiJi" type="checkbox" unchecked style="width: 25%;height: 20px;">
+                <label for="SuiJiChuZhi" style="width: 25%;height: 20px;">随机</label><br>  
+            </div>
+
+            <p id="pointDate" class="overflow" style="color: white;font-size: smaller;display: inline-block;width: 100%;margin-top: 5px;">随机范围：</p>
+            <div class = "rightDiv">
+                <input class="numCL" id="" type="number" value="0" style="width: 40%;border: 1px solid white;" placeholder="0"></input>
+                <button onclick="allIn(1)" style="width: 15%;font-size: 80%;">/</button>
+                <button onclick="Plus100x(1,10)" style="width: 15%;font-size: 90%;">x</button>
+                <button onclick="allIn(1)" style="width: 15%;font-size: 80%;">./</button>
+                <button onclick="Plus100x(1,10)" style="width: 15%;font-size: 90%;">.x</button>
+            </div>
+            <div class = "rightDiv">
+                <input class="numCL" id="" type="number" value="6" style="width: 40%;border: 1px solid white;" placeholder="0"></input>
+                <button onclick="allIn(1)" style="width: 15%;font-size: 80%;">/</button>
+                <button onclick="Plus100x(1,10)" style="width: 15%;font-size: 90%;">x</button>
+                <button onclick="allIn(1)" style="width: 15%;font-size: 80%;">./</button>
+                <button onclick="Plus100x(1,10)" style="width: 15%;font-size: 90%;">.x</button>
+            </div>
+            <p id="pointDate" class="overflow" style="color: white;font-size: smaller;display: inline-block;width: 45%;margin-top: 5px;">随机中值：</p>
+            <input class="numCL" id="" type="number" value="3" style="width: 50%;border: 1px solid white;" placeholder="0"></input>
+            <div class = "rightDiv">
+                <button onclick="numCL[3].value=1;numCLValueArray[3]=1;" style="width: 20%;font-size: 80%;">.1</button>
+                <button onclick="numCL[3].value=3;numCLValueArray[3]=3;" style="width: 20%;font-size: 80%;">.3</button>
+                <button onclick="numCL[3].value=5;numCLValueArray[3]=5;" style="width: 20%;font-size: 90%;">.5</button>
+                <button onclick="numCL[3].value=7;numCLValueArray[3]=7;" style="width: 20%;font-size: 90%;">.7</button>
+                <button onclick="numCL[3].value=9;numCLValueArray[3]=9;" style="width: 20%;font-size: 80%;">.9</button>
+            </div>
+        </div>
+
+        <div style="width: 100%;display: flex;align-items: flex-end;">
+            <p id="QuanJuZhangDie" style="font-size: 1.8vw;width: 60%;">0.00%</p>          
+            <p id="DuanQiZhangDie" style="font-size: 1.3vw;width: 40%;">0.00%</p>
+        </div>
+        <div style="width: 100%;display: flex;align-items: flex-end;">
+            <input class="radioCL"  id="SYSSuiji" type="checkbox" unchecked style="width: 25%;height: 20px;">
+            <label for="SYSSuiji" style="width: 25%;height: 20px;">随机</label><br>  
+            <input class="radioCL"  id="SYSXunhuan" type="checkbox" unchecked style="width: 25%;height: 20px;">
+            <label for="SYSXunhuan" style="width: 25%;height: 20px;">循环</label><br>  
+            
+        </div>
+        <div class="tradeInfoContainer" style="padding-top:0;">
+            <div class = "rightDiv">
+                <p id="from4" class="width20p"style="font-size: smaller;width: 20%;height: 18px;color:green;">空防 </p>
+                <input class="numCL" id="" type="number" value="10" style="width: 30%;border: 1px solid white;height: 20px;" placeholder="0"></input>
+                <button onclick="allIn(1)" style="width: 16%;font-size: 80%;height: 20px;">/</button>
+                <button onclick="allIn(1)" style="width: 16%;font-size: 80%;height: 20px;">x</button>
+                <input id="SuiJiChuZhi" type="checkbox" unchecked style="width: 16%;height: 20px;padding: 0;margin: 0;">
+            </div>
+            <div class = "rightDiv">
+                <input class="radioCL"  id="KongFangBanSuiji" type="checkbox" unchecked style="width: 16%;height: 17px;padding: 0;margin: 0;">
+                <label for="KongFangBanSuiji" style="font-size: smaller;width: 25%;height: 17px;color:green;">半随</label><br> 
+                <input class="numBSJ" id="" type="" value="0" style="width: 25%;border: 1px solid white;height: 17px;" placeholder="0"></input>
+                ||<input class="numCL" id="" type="number" value="3" style="width: 25%;border: 1px solid white;height: 17px;" placeholder="0"></input>
+            </div>
+            <div class = "rightDiv">
+                <p id="from4" class="width20p"style="font-size: smaller;width: 20%;height: 18px;color:lightgreen;">空攻 </p>
+                <input class="numCL" id="" type="number" value="10" style="width: 30%;border: 1px solid white;height: 20px;" placeholder="0"></input>
+                <button onclick="kongGliang--;" style="width: 16%;font-size: 80%;height: 20px;">-</button>
+                <button onclick="kongGliang++;" style="width: 16%;font-size: 80%;height: 20px;">+</button>
+                <input id="SuiJiChuZhi" type="checkbox" unchecked style="width: 16%;height: 20px;padding: 0;margin: 0;">
+            </div>
+            <div class = "rightDiv">
+                <input class="radioCL"  id="KongGongBanSuiji" type="checkbox" unchecked style="width: 16%;height: 17px;padding: 0;margin: 0;">
+                <label for="KongGongBanSuiji" style="font-size: smaller;width: 25%;height: 17px;color:lightgreen;">半随</label><br> 
+                <input class="numBSJ" id="" type="" value="0" style="width: 25%;border: 1px solid white;height: 17px;" placeholder="0"></input>
+                ||<input class="numCL" id="" type="number" value="3" style="width: 25%;border: 1px solid white;height: 17px;color: white;" placeholder="0"></input>
+            </div>
+            <div class = "rightDiv">
+                <p id="from4" class="width20p"style="font-size: smaller;width: 20%;height: 18px;color:red;">多攻 </p>
+                <input class="numCL" id="" type="number" value="10" style="width: 30%;border: 1px solid white;height: 20px;" placeholder="0"></input>
+                <button onclick="duoGLiang--;" style="width: 16%;font-size: 80%;height: 20px;">-</button>
+                <button onclick="duoGLiang++;" style="width: 16%;font-size: 80%;height: 20px;">+</button>
+                <input id="SuiJiChuZhi" type="checkbox" unchecked style="width: 16%;height: 20px;padding: 0;margin: 0;">
+            </div>
+            <div class = "rightDiv">
+                <input class="radioCL"  id="GongGongBanSuiji" type="checkbox" unchecked style="width: 16%;height: 17px;padding: 0;margin: 0;">
+                <label for="GongGongBanSuiji" style="font-size: smaller;width: 25%;height: 17px;color:red;">半随</label><br> 
+                <input class="numBSJ" id="" type="" value="0" style="width: 25%;border: 1px solid white;height: 17px;" placeholder="0"></input>
+                ||<input class="numCL" id="" type="number" value="3" style="width: 25%;border: 1px solid white;height: 17px;color: white;" placeholder="0"></input>
+            </div>
+            <div class = "rightDiv">
+                <p id="from4" class="width20p"style="font-size: smaller;width: 20%;height: 18px;color:darkred;">多防 </p>
+                <input class="numCL" id="" type="number" value="10" style="width: 30%;border: 1px solid white;height: 20px;" placeholder="0"></input>
+                <button onclick="allIn(1)" style="width: 16%;font-size: 80%;height: 20px;">/</button>
+                <button onclick="allIn(1)" style="width: 16%;font-size: 80%;height: 20px;">x</button>
+                <input id="SuiJiChuZhi" type="checkbox" unchecked style="width: 16%;height: 20px;padding: 0;margin: 0;">
+            </div>
+            <div class = "rightDiv">
+                <input class="radioCL"  id="DuoFangBanSuiji" type="checkbox" unchecked style="width: 16%;height: 17px;padding: 0;margin: 0;">
+                <label for="DuoFangBanSuiji" style="font-size: smaller;width: 25%;height: 17px;color:darkred;">半随</label><br> 
+                <input class="numBSJ" id="" type="" value="0" style="width: 25%;border: 1px solid white;height: 17px;" placeholder="0"></input>
+                ||<input class="numCL" id="" type="number" value="3" style="width: 25%;border: 1px solid white;height: 17px;" placeholder="0"></input>            </div>
+            </div>
+            <div style="width: 100%;display: flex;align-items: flex-end;">
+              <input class="radioCL"  id="Geuss" type="checkbox" unchecked style="width: 25%;height: 20px;">
+              <label for="Geuss" style="width: 25%;height: 20px;">Geuss</label><br>  
+            </div>
+            <div class = "rightDiv">
+                <p id="sub1" class="flexOne" onclick="downloadList.style.display = 'flex';downloadCanvasAsImage('Minschart', win+loss+ping+'涨跌'+numCLValueArray[14]+'MinsLineCanvas.png',unitReport());">记录</p>
+                <p id="sub1" class="flexOne" onclick="IndexSwitch(0,this)">重播</p>
+                <p id="sub1" class="flexOne" onclick="downloadList.style.display = 'none';">导入</p>
+                <p id="sub1" class="flexOne" onclick="downloadList.style.display = 'flex';">导出</p>
+            </div>
+
+            <div class="tradeInfoContainer">
+                <!-- //VOLUME,drawAverageLine,IVCD,BBI,BTX,BIAS_QL,NKD,RSIS,OPENVOL,CAT/TST
+                     //0         1             2     3   4   5       6   7，   8     9-->
+                <div class = "rightDiv">
+                  <p id="sub1" class="flexOne" onclick="IndexSwitch(0,this)">VOL</p>
+                  <p id="sub2" class="flexOne" onclick="IndexSwitch(1,this)" style="background: white;color: black;">AVG</p>
+                  <p id="sub3" class="flexOne" onclick="IndexSwitch(2,this)" style="background: white;color: black;">I_V</p>
+                  <p id="sub4" class="flexOne" onclick="IndexSwitch(3,this)" style="background: white;color: black;">BBI</p>
+                </div>
+                <div class = "rightDiv">
+                    <p id="sub1" class="flexOne" onclick="IndexSwitch(0,this)">VOL</p>
+                    <p id="sub2" class="flexOne" onclick="IndexSwitch(1,this)" style="background: white;color: black;">AVG</p>
+                    <p id="sub3" class="flexOne" onclick="IndexSwitch(2,this)" style="background: white;color: black;">I_V</p>
+                    <p id="sub4" class="flexOne" onclick="IndexSwitch(3,this)" style="background: white;color: black;">BBI</p>
+                  </div>
+            </div>
+
+        <div class="tradeInfoContainer">
+          <!-- //VOLUME,  drawAverageLine,IVCD,BBI,   BTX,BIAS_QL,NKD,    RSIS,OPENVOL,PRE,TST
+                //0           1             2     3      4   5       6       7，   8     9  10 -->
+          <div class = "rightDiv">
+            <p class="flexOne" onclick="PrintBASICVariables('INF',shortflag=false)">INF</p>
+            <p class="flexOne" onclick="drawTestDrict('red',0,0,100,100)">DTS</p>
+            <p class="flexOne" onclick="SpecialInfo()">SPI</p>
+          </div>
+        </div>
+        <div style="display: flex;">
+            <label style="font-size: smaller;width: 20%;height: 20px;">速度</label>
+            <input class="numCL"   id="SuDu1"      type="number" placeholder="7000"  value="7000" style="width: 30%;height: 20px;">x
+            <input class="numCL"   id="SuDu2"      type="number" placeholder="7000"  value="7000" style="width: 30%;height: 20px;">
+        </div>
+      </div>
+
+      <div class="filter">
+            <canvas id="MASKchart"></canvas>
+            <canvas id="Minschart"></canvas>
+      </div>
+    </div>
+    <!-- <div id="showMainchartSize"></div> -->
+     <div id="downloadList" style="visibility: visible;display: flex;flex-wrap: wrap;"></div>
+    <!-- 模态框 -->
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+          <!-- <span class="close">&times;</span> -->
+          <p>选择多空方向：</p>
+          <div class="modal-buttons">
+              <button id="moreButton">多</button>
+              <button id="emptyButton">空</button>
+              <button id="unknownButton">不知道</button>
+          </div>
+      </div>
+    </div>
+
+  </body>
+
+<script src="chart.js" defer></script>
+<script>
+
+
+
+
+
+
+
+</script>
+</html>
+
